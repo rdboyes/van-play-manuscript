@@ -1,7 +1,7 @@
 ---
-output:
-  word_document: default
-  html_document: default
+format:
+  pdf:
+    keep-tex: true
 ---
 # Manuscript 2: Development of a Neighbourhood Playability Index {#man-2}
 
