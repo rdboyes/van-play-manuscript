@@ -1,0 +1,286 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+# Manuscript 2: Development of a Neighbourhood Playability Index {#man-2}
+
+## Publication Information
+
+This manuscript is formatted for submission to BMC Public Health, but it has not yet been submitted. 
+
+## Authors
+
+- Boyes, Randy
+- Pickett, William
+- Janssen, Ian
+- Masse, Louise 
+- Han, Christina
+- Schuurman, Nadine
+- Brussoni, Mariana
+
+## Author Contributions
+
+Conceptualization, R.B.; methodology, R.B.; software, R.B.; validation, R.B.; formal analysis, R.B.; investigation, R.B.; resources, C.H., M.B.; data curation, R.B.; writing—original draft preparation, R.B.; writing—review and editing, R.B., W.P., I.J., N.S., L.M.; visualization, R.B.; supervision, M.B., W.P., I.J., N.S., L.M.; project administration, C.H., M.B.; funding acquisition, M.B. Final approval of manuscript to be obtained prior to submission.
+
+\newpage
+
+## Abstract
+
+*Background*: Childrens' unsupervised outdoor activity includes outdoor play and other unsupervised outdoor activities and has an essential role in child development. Although it is recognized that the neighbourhood environment is a potential determinant of this behaviour, no validated index is currently available that specifically aims to quantify the overall suitability of a neighbourhood for childrens’ outdoor play.
+
+*Methods*: One week of activity data from 105 children in Vancouver, British Columbia was collected and used to assess total unsupervised outdoor activity. Features of the neighbourhood surrounding these children's houses were extracted from GIS databases, OpenStreetMap, and Street View images and used to build a prediction model. 
+
+*Results*: Predictions of unsupervised outdoor activity were generated for all postal code areas in metro Vancouver. Out-of-sample predictive accuracy of the index for children's behaviour was low, but incorporation of weakly informative priors was shown to improve the relationship (RMSE 129.4 minutes without priors, 79.2 minutes with priors.) 
+
+*Conclusion*: Initial models of playability were developed for Vancouver and used to generate a playability index for all neighbourhoods in the Greater Vancouver area that described the suitability of these neighbourhoods for outdoor active play. Future work can use this methodology and additional data to expand the geographic area covered by this index and improve the accuracy of the parameter estimates.
+
+## Introduction
+
+Play is a fundamental part of childhood and consists of voluntary engagement in activity that is fun and/or rewarding and usually driven by intrinsic motivation [@Lee2022-jk]. Outdoor active play is a type of play that takes place outdoors and involves physical activity of any intensity [@Lee2022-jk]. Unsupervised outdoor activity (UOA) includes outdoor active play and other unsupervised outdoor activities and has an essential role in child development; it is associated with improved physical fitness, cognitive abilities, and social skills in children [@Herrington2015-pb; @Smith2005-we]. UOA typically involves lower levels of adult supervision and can involve risk [@Brussoni2015-rh]. Parents' perception of this risk may contribute to the overall decline in UOA that has been observed in recent decades [@Hofferth2009-kn]. Formerly unstructured, unsupervised play time has been replaced with either structured physical activity [@fritz2014challenges] or with sedentary time, notably online social media use [@Bozzola2022-sg; @Mullan2019-nc]; this reduction has been linked to negative impacts on mental health [@Gray2023-sz].
+
+Creating a supportive environment for children can increase their propensity to engage in UOA. Children aged 10 to 13 report that they are more likely to engage in unsupervised outdoor activities if they feel both socially and physically safe and have interesting things to do, including having other children to play with, diverse amenities, access to nature, and opportunities for challenge and risky play [@Brussoni2020-hz]. In urban environments, these aspects of the built and natural environment are the result of active or passive human intervention, and the presence or absence of them can influence the quality of life of residents [@wright2017cities]. Quantitative studies of the influence of the built environment on outdoor play behavior have found positive associations between UOA and traffic calming features and pedestrian amenities [@Lee2016-zp], low traffic volumes [@Aarts2012-dt; @Lee2016-zp], and neighbourhood greenness [@Aarts2010-pk; @Gubbels2016-jb], and seeing other people outside engaged in physical activity [@Salmon2013-mt], while negative associations have been demonstrated with walkability [@Lee2016-zp] and neighbourhood disorder [@Aarts2012-dt]. Evidence for the influence of crime-based safety on children's play behaviour is mixed [@Deweese2013-bg; @Machado-Rodrigues2014-kd]. The evidence for the existence of each of these effects individually is low to moderate, and the magnitude of their effect is likely small, but taken together, they can represent a socially meaningful effect [@Lambert2019-ns].
+
+Although it is recognized that the neighbourhood environment is a determinant of outdoor play and that several features of the environment are important, no index is currently available that specifically aims to quantify the overall suitability of a neighbourhood for childrens’ unsupervised outdoor activity. This index of playability could potentially be used to measure the playability of a neighbourhood and to inform the municipal design of spaces that are playable for children once it has been validated in multiple contexts and settings. The promotion of outdoor play for children is a priority for health-promoting agencies across North America, including NAEYC [@Mission_undated-zi], the American Academy of Pediatrics [@noauthor_undated-dk], and the Children's Hospital of Eastern Ontario [@noauthor_2022-aq]. Taking playability into account may improve the quality of life in cities by promoting physical activity, health, and well-being, reducing traffic and congestion, and encouraging the creation of streets, spaces, and facilities that people of all ages can enjoy together [@wright2017cities].
+
+In this study, we describe the development of a model for time spent in UOA and the derivation of an index of neighbourhood playability from that model. The specific objectives were to build a prediction model for UOA in children based on prior quantitative findings and qualitative reports from children on the importance of different physical and social neighbourhood features, and use the model's predictions to generate a “Playability Score” for neighbourhoods across an entire metropolitan area. 
+
+## Methods
+
+This manuscript is structured according to the TRIPOD guidelines for reporting the development of a prediction model, a set of 22 items deemed important to the transparent and accurate reporting and interpretation of prediction models [@Collins2015-da].
+
+### Data Source
+
+This study uses data collected as part of the *State of Play* project from Metro Vancouver, a metropolitan area with 21 municipalities in British Columbia, Canada. A detailed description of the methodology and theoretical framework of this project is published elsewhere [@Christina_S_Han2018-jv]. Briefly, State of Play was a mixed-methods study that aimed to develop measurements of the suitability of neighbourhood environments for unsupervised outdoor activities for children ages 10 to 13. Over this age range, childrens' experience of outdoor play shifts. At ten years old, many children are just beginning to gain some independence in terms of where they play and what specific activities they will engage in, expanding their allowed space beyond the area immediately around their home [@Obrien2000-np]. However, as children get older, they tend to increase the amount of time they spend in organized physical activity such as sports and decrease the amount of time spent in outdoor active play [@Borghese2019-fw]. This age range therefore provides an ideal sample for the development of a Playability index that looks at the influence of the neighbourhood environment on outdoor active play behaviour. The Ecological Systems Theory and the Social Construction of Gender Framework provided the theoretical foundations for this study [@Bronfenbrenner1986-vz; @Ridgeway2009-ed]. 
+
+Children were eligible for *State of Play* if they met the following criteria: between 10 and 13 years of age; spoke english; were permitted by their parent(s) to engage in unsupervised activity outside of the home; and their family resided in either Grandview-Woodland, Lonsdale, or Steveston. These neighbourhoods were chosen for their diversity in density (e.g. Richmond has low population density, while the others have high density), land use, and access to nature (e.g. Lonsdale has much higher percentage of recreational/green space/protected land). Informed consent was obtained from all study participants. 
+
+105 children in total, 35 from each of the three Vancouver neighbourhoods were recruited and interviewed as part of the *State of Play* project [@Christina_S_Han2018-jv]. Multiple concurrent methods of data collection, including go-along interviews with children, map drawings and photographs by children, interviews with parents, questionnaires completed by both children and parents, and quantitative accelerometer and GPS tracker data to measure physical activity were employed in a concurrent triangulation approach to more completely understand the concept of Playability [@Denzin1989-rg].
+
+### Outcome
+
+The outcome of interest in this study is daily time spent in UOA, measured continuously. Time in UOA was chosen as the primary proxy measure of the suitability of space for play because 1) it incorporates aspects of both parental and childrens' decision-making and perception of space as being suitable for play; 2) there is likely to be a dose-response relationship between time spent in UOA and the health benefits provided by UOA; 3) as compared to asking children or parents about their perception of suitability, measuring time spent provides a more objective measure; and 4) time spent in UOA can be measured by questionnaires given directly to children, which allows for follow-up studies in larger populations to assess a similar outcome. UOA was measured by using a GPS logger (Garmin Forerunnner 230) and an accelerometer (Actical by Philips Respironics), worn for a period of one week, except when sleeping or when engaging in an activity such as showering or swimming that required their removal. The children wore the devices for an average of 13.45 hours/day (s.d. 2.28 hours) for each of the study days. Additionally, children and their parents kept separate time-use diaries that recorded the activities the child participated in throughout the day. Parents were asked to record any unsupervised outdoor time and children were asked to record all activities. GPS and accelerometer data were processed using PALMS software [@Patrick2008-lp] and cross-referenced to the time-use diaries to categorize the children's time at the level of 15-second epochs [@Borghese2018-qp]. Any discrepancies or ambiguities were resolved by interview with the child. The outcome measure was the amount of time that the children reported spending in unsupervised outdoor activity, aggregated to a measure of minutes of play for each of the seven days available per child. This methodology is described in further detail elsewhere [@Christina_S_Han2018-jv].
+
+### Predictors
+
+Qualitative interviews revealed two key themes that influence children's desire and ability to engage in UOA, each with multiple sub-themes [@Brussoni2020-hz]. The first theme was "Feeling safe", which encompassed a sense of social and physical safety, including children's sense of neighbourliness, social dangers, discomfort around traffic, and personal agency to keep themselves safe. The second theme, having "things to do," included the affordances that children perceived as important in their neighbourhoods, particularly having other children to play with, diverse amenities and access to nature, and opportunities for challenge and risky play [@Brussoni2020-hz]. Predictor variables were chosen from across various available sources in order to measure these themes and their subthemes. Weakly informative priors were constructed for these predictors based on their *a priori* expected relationship with playability based on these themes. Variables which were mentioned as being important by the children and had a clear expected direction were given a quantitative prior ($Normal(1, 5)$ or $Normal(-1, 5)$) which implies a small effect but allows for null or reversed effects depending on the data. Variables which did not have a clear expected direction of effect were given a prior that suggests a zero effect, but allows the quantitative data to overwhelm the prior if there is strong evidence of an effect ($Normal(0, 5)$) [@Morris2015-us; @Lemoine2019-ud; @McElreath2020-dg].
+
+Geographic measures were assessed in the 1 km euclidean buffer around the child's home, as determined by geolocating their reported home address. Euclidean buffers were chosen over manhattan-style (buffers which are confined to the road network) upon consideration of the manner in which children engaged in play can travel. Children are not confined to use road networks, but rather can travel on paths, through yards, forests, and similar, so a Euclidean buffer more accurately describes the space available to them.  
+
+For each child, measures of the presence of the following objects in Google Street View images in the buffer were taken and standardized continuous representations were included as predictors: buses, motorcycles, cars, trucks, traffic lights, traffic signs, sidewalks, roads, trees, fences, poles, terrain, bicycles, and people [@Boyes2023-zf].
+
+Additional neighbourhood geographic data were sourced from ESRI databases including the Enhanced Points of Interest database. Relevant measures were calculated using the sf package in R [@sf-package]. These measures included the number of parks, number of convenience stores, number of fast food restaurants, the average speed limit of nearby roads, and a count of the number of points of interest that were categorized in each North American Industry Classification System grouping. These measures all targeted potential "Things to Do". The Enhanced Points of Interest database has been shown to be well correlated with municipal-level datasets for the business types measured in this study (sensitivity 0.75 for convenience stores, 0.72 for fast food) [@Daepp2017-ue].
+
+Census of Population 2016 data for the census tract of each home was also included in the model [@Government_of_Canada2017-vc]. Measures included 1 year residential mobility (a measure of the number of people who have moved in the previous year), percentage of adults who use active transportation to get to work; the percentage of the population over the age of 65; and the percentage of the population between 5 and 14 years of age. While reporting errors are possible, Statistics Canada actively monitors the accuracy of Canadian census data, checking for undercoverage and overcoverage and addressing data errors if they are discovered [@Government_of_Canada2020-zn]. These measures were included as proxy measures of the target themes. Mobility indirectly measures neighbourliness or social cohesion, which was part of "Feeling Safe". Active transport and population between 5 and 14 address "Things to Do"; the ability to get around and friends to do things with. Population over the age of 65 was included because children indicated that having older people around to watch out for them was one of the things that made them feel safe. 
+
+The models also used data available nationwide that was collected from OpenStreetMap [@OpenStreetMap] as part of the CAN-ALE project, including measures of street connectivity and transit accessibility. OpenStreetMap data has been shown to be of similar quality to proprietary geographic data sources, with higher accuracy in urban areas where more contributions are made [@Zhang_undated-hw]. The CAN-ALE measures were validated via convergent validity with other measures of physical activity [@Hermann2019-zw]. CAN-ALE's connectivity measure was taken as a measure of traffic safety, and their transit measure as a potential "Thing to Do". Finally, the models include a measure of socioeconomic deprivation available in Canada called the Canadian Index of Multiple Deprivation, which is measured at the level of Census Dissemination Areas [@Government_of_Canada2019-fv]. The Canadian Index of Multiple Deprivation is an updated version of the Canadian Marginalization Index, which has been shown to be stable over time and correlated with numerous health outcomes, including diabetes, heart disease, and overall well-being, as well as health behaviours including excess alcohol consumption, obesity, and physical activity [@Matheson2012-ty]. These measures of socioeconomic deprivation were included as potential measures of how "safe" the neighbourhood would be percieved to be.
+
+In addition to measures of the neighbourhood environment, the models used two covariates that reflected demographic characteristics of the child (age, sex) and a small number of the covariates that reflected information about the day the outdoor play measures were obtained (day of the week, high and low temperature, precipitation amount, number of daylight hours). These control variables were included to help isolate the effect of the built environment by removing some of the variability in outcome that is due to the features of the day or child. 
+The complete list of predictors, their fit within the themes and subthemes that influence children’s UOA, details of their measurement, and an indication of whether or not they were mentioned by children as being important for UAO are shown in Table \@ref(tab:m2-priors). 
+
+\begingroup 
+\setlength{\LTleft}{0pt minus 500pt} 
+\setlength{\LTright}{0pt minus 500pt} 
+\fontsize{8pt}{10pt}\selectfont \addtolength{\tabcolsep}{-3pt}  
+
+```{r, m2-priors}
+tibble::tribble(
+                      ~Predictor,               ~`Units/Measurement`,                           ~Theme,     ~Prior,
+                                "Age",                     "Age of child",                               "N/A",  "Neutral",
+                "Average Speed Limit",                             "km/h",    "Discomfort around traffic", "Negative",
+                     "CANALE Transit", "z scored availability of transit",                    "Things to do", "Positive",
+            "Census Active Transport",  "% people using active transport", "On the streets - Active Transport", "Positive",
+                           "Children",         "% DA population children",    "Children to play with", "Positive",
+                               "CIMD",           "4 z scores",             "Multiple", "Neutral",
+                 "Convenience Stores",                            "Count",                      "Things to do", "Positive",
+                    "Day of the week",                          "Nominal",                               "N/A",  "Neutral",
+                       "Event Spaces",                            "Count",                      "Things to do", "Positive",
+              "Fast Food Restaurants",                            "Count",                      "Things to do", "Positive",
+                 "Light after school",                    "Per day (hrs)",                               "N/A", "Positive",
+                "Maximum Temperature",                "Per day (degrees)",                               "N/A",  "Neutral",
+                "Minimum Temperature",                "Per day (degrees)",                               "N/A",  "Neutral",
+  "NAICS Industry Counts (Dangerous)",                   "z scored count",            "Physical safety", "Negative",
+      "NAICS Industry Counts (Other)",                   "z scored count",                    "Things to do",  "Neutral",
+                            "Over 65",          "% DA population over 65",   "Social Safety", "Positive",
+                              "Parks",                 "% area in buffer",                      "Things to do", "Positive",
+                            "Pet Dog",   "Does the child have a pet dog?",                               "N/A", "Positive",
+                        "Rain amount",                     "Per day (mm)",                               "N/A", "Negative",
+               "Residential Mobility",      "% people moved in last 1 yr",   "Sense of Neighbourliness", "Negative",
+                                "Sex",                     "Sex of child",                               "N/A",  "Neutral",
+                "Street Connectivity",             "Intersection density",    "Discomfort around traffic", "Negative",
+                 "StreetView Bicycle",              "Average Pixel Count",  "Things to do", "Positive",
+                     "StreetView Bus",              "Average Pixel Count", "Discomfort around traffic", "Positive",
+              "StreetView Motorcycle",              "Average Pixel Count",    "Discomfort around traffic", "Negative",
+                  "StreetView People",              "Average Pixel Count",   "Sense of Neighbourliness", "Positive",
+                   "StreetView Roads",              "Average Pixel Count",    "Discomfort around traffic", "Positive",
+                "StreetView Sidewalk",              "Average Pixel Count",  "Things to do", "Positive",
+           "StreetView Traffic Light",              "Average Pixel Count",    "Discomfort around traffic", "Negative",
+           "StreetView Traffic Signs",              "Average Pixel Count",    "Discomfort around traffic", "Negative",
+                   "StreetView Trees",              "Average Pixel Count",                      "Things to do", "Positive"
+  ) |> 
+  knitr::kable(booktabs = TRUE, format = "latex", 
+        caption = "Predictors used in the development of the prediction model.") |> 
+        kableExtra::kable_styling(latex_options = "scale_down") |> 
+  kableExtra::footnote(general = "Weakly informative priors are assigned based on the expected direction of effect. All priors use a Normal distribution with a standard deviation of 5. 'Positive' priors have a mean of +1, 'Negative' priors have a mean of -1, and 'Neutral' priors have a mean of zero.", threeparttable = TRUE)   
+
+
+
+
+```
+
+\endgroup
+
+### Missing Data
+
+The only predictors included in the model with missing data were the weather variables (temperature and rain), which had missing data for 8 of the 722 study days. A value of zero was imputed to allow predictions to be made from the model easily outside of the original training data in the case that not all of the variables are known.
+
+### Statistical Analysis Methods
+
+Except for the two nominal inputs (sex and day of the week), all predictors were centered and scaled and included in the model as continuous variables. No categorization [@Naggara2011-rc] was performed on these variables, nor was any form of "data-driven" variable selection performed [@Smith2018-cl]. Confidence intervals are high posterior density intervals calculated with the brms R package [@McElreath2020-dg; @brms].
+
+### Model Building Procedures
+
+The units of analysis for this study are days, clustered within children. The models used for prediction are multilevel zero-inflated beta regression models fit with the brms package in R [@brms]. This model form represents a data-generating process that occurs in two stages: 1) The child and/or their parent first decided whether they will engage at all in UOA on a given day, and 2) the child and/or their parent then decided for how long they would engage in UOA. The predictors are assumed to have a potential influence on both the probability of any play and the length of time that the child will engage in UOA. Weak positive or negative informative priors were used in the model to incorporate the expected direction of effect indicated by the children. For example, "Fast Food Restaurants" was a predictor that was related to the "Things to Do" theme. Children expressed that an increased number of things to do nearby their house had a positive relationship with their time spent in UOA. A prior for this variable was assigned that would slightly bias the final estimate to be positive (a normal distribution with a mean of 1 and a standard deviation of 5: Normal(1, 5)). This prior is "weakly informative" in the sense that if the data shows that the relationship is actually negative, the prior can be easily overwhelmed by that evidence. Predictor variables with less clear connection to the concepts articulated by the children in the study were given priors centered around zero with small variance, which has the effect of shrinking the coefficient estimate towards the null.
+
+### Internal Model Validation
+
+Cross validation was employed to estimate the expected out-of-sample prediction performance of the model. We used a five-fold cross-validation strategy, with models trained on 80% of children used to predict the behaviour of the remaining 20% of children [@Kuhn2013-nm]. The average RMSE (Root Mean Squared Error) both with and without the subjective priors was calculated for both the training and testing data.
+
+### Index Generation
+
+To generate the Playability Index, the prediction model was used to predict the amount of play time that would be expected for an average child in the sample for each of the postal codes present in the metropolitan Vancouver area. The centroids of each postal code area were used to create voronoi polygons to tile the space available, and those voronoi polygons were assigned a scaled value from 1 (the lowest predicted amount of play) to 5 (the highest predicted amount of play) [@Voronoi1908-fk; @sf].
+
+## Results
+
+### Demographic Characteristics
+
+Complete outcome data for all 7 days were available for 103 of the 105 children for a total of 721 available days of data. Participants ranged from 10 to 13 years of age and were enrolled in grades 4 through 9. The majority of the sample (66%) was white. Demographic characteristics of the children are presented in Table \@ref(tab:m2-demos).
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+
+```
+
+```{r, m2-demos}
+library(gtsummary)
+library(tidyverse)
+library(gt)
+
+load(file = "data/child_demo_2.rda")
+
+
+child_demo_t1 <- child_demo_2 |> 
+  mutate(Neighbourhood = as.factor(str_sub(ID_child,1,1))) |> 
+  mutate(Gender = case_when(
+    is.na(DEMsexC) | DEMsexC == 3 ~ NA_character_,  
+    DEMsexC == 1 ~ "Male",
+    DEMsexC == 2 ~ "Female")) |> 
+  mutate(Race = case_when(DEMraceC == 5 ~ "White",
+         TRUE ~ "Other")) |> 
+  mutate(Grade = as.factor(DEMgradeC)) |> 
+  rename(Age = "DEMageC") |> 
+  mutate(Age = paste0("Age ", Age)) |> 
+  mutate(`Pet Dog` = case_when(
+    DEMpetdogC == 1 ~ "Has a dog",
+    DEMpetdogC == 2 ~ "Does not have a dog"))
+
+select(child_demo_t1, 
+       `Play Hours per Day (Objective)` = Mean_play_hours,
+       `Play Hours per Day (Self-Report)` = self_reported_play,
+       Age, Gender, Race, `Pet Dog`, Income, Siblings) |> tbl_summary(by = Gender, missing = "no") |> 
+       as_kable_extra(booktabs = TRUE, format = "latex",
+        caption = "Demographics characteristics of the sample, stratified by sex.")
+```
+
+### Outcome
+
+Children engaged in no UOA on 265 of the 722 study days. The average amount of UOA on days where the amount was not zero was 1.22 hours, with a standard deviation of 1.31 hours. The distribution of outcome is visualized in Figure \@ref(fig:m2-outcome-dist).
+
+```{r, m2-outcome-dist, fig.height = 3, fig.scap = "Distribution of number of hours of UOA by day.", fig.cap = "Distribution of number of hours of Unsupervised Outdoor Activity (UOA) by day. Many of the observed days have no time spent in UOA. On days where the children engaged in UOA, time spent ranged from 2.5 minutes to nearly 10 hours."}
+load("data/play_data_by_day.rda")
+
+play_data_by_day |>
+    mutate(plottable_ph = case_when(play_hours == 0 ~ 0.01, TRUE ~ play_hours)) |> 
+    ggplot() + 
+    geom_histogram(aes(x = plottable_ph)) +
+    scale_x_log10(name = "Number of Hours of Unsupervised Outdoor Activity", labels = ~round(., 1)) +
+    labs(y = "Days") + theme_minimal()
+
+```
+
+
+### Model Specification
+
+The fitted model coefficients for the two levels of the model are displayed in Table  \@ref(tab:m2-model-params). Parameters indicated with 'ZI' show the coefficients for the initial phase of the model, and the estimates are the parameters of a logistic regression model. The remaining estimated beta parameters show the second phase of the model, where the beta estimates are displayed per 1 standard deviation change in the continuous predictor. Error bars in these figures represent 95% high posterior density intervals. On days where the children engaged in UOA, their time in UOA was influenced to some extent by the built environment features of their neighbourhood. These intervals for all parameter estimates contain zero except for the presence of electronics manufacturing and oil and chemical manufacturing, which have a more clear negative impact.
+
+\newpage
+
+```{r, m2-model-params}
+read_csv("data/hbsc_model_coef.csv") |> 
+  select(Parameter, Estimate = Vancouver) |> 
+  mutate(Parameter = ifelse(str_sub(Parameter,1,2) == "ZI", paste0(Parameter, "\\textsuperscript{a}"), Parameter)) |> 
+  mutate(Parameter = ifelse(str_sub(Parameter,1,2) == "CA", paste0(Parameter, "\\textsuperscript{b}"), Parameter)) |> 
+  mutate(Parameter = ifelse(str_sub(Parameter,1,2) == "CI", paste0(Parameter, "\\textsuperscript{c}"), Parameter)) |> 
+  mutate(Parameter = ifelse(str_sub(Parameter,1,2) == "NA", paste0(Parameter, "\\textsuperscript{d}"), Parameter)) |> 
+  knitr::kable(format = "latex", booktabs = TRUE, longtable = TRUE, escape = FALSE,
+             caption = "Model beta estimates (95 percent high posterior density intervals) for the final model.") |> 
+  kableExtra::footnote(alphabet = c("ZI Parameters are parameters of the initial zero-inflation part of the model", 
+                                    "Variables from the Canadian Active Living Environments Project",
+                                    "These four measures from the Canadian Index of Multiple Deprivation are measures of socioeconomic status", "The North American Industry Classification System."), threeparttable = TRUE)
+```
+
+### Model Evaluation
+
+The predictions made by the model with and without weakly informative priors were evaluated by resampling inside the train set and in the test set. The Root Mean Squared Error (RMSE) of these predictions for the model with default priors was 31.20 minutes in the train set, which was superior to the model with weakly informative priors at 34.74 minutes. In the test set, these results were reversed. The model with weakly informative priors had a RMSE of 79.20 minutes, superior to the default prior model at 129.4 minutes. 
+
+### Index Generation
+
+Given its superior out-of-sample performance, as demonstrated by the testing RMSE value, the prior-informed model was used to generate the Playability Index for all neighbourhoods in Metro Vancouver. Maps that illustrate the neighbourhood playability for some areas of Vancouver are displayed in Figures \@ref(fig:m2-index-lonsdale) and \@ref(fig:m2-index-stevenston). A more interactive form of the map for the entire metro Vancouver area is available at [randyboyes.shinyapps.io/playability_index](randyboyes.shinyapps.io/playability_index). Playability scores are on a five point scale, with higher scores representing higher playability.
+
+```{r, m2-index-lonsdale, fig.scap = "Playability Index in the Lonsdale and Grandview-Woodland neighbourhoods.", fig.cap = "Playability Index in the Lonsdale and Grandview-Woodland neighbourhoods. The index is calculated for each postal code. A Playability Index of 1 indicates the lowest playability and a score of 5 indicates the highest playability."}
+include_graphics("figures/plot_van_all_roads.png")
+```
+
+```{r, m2-index-stevenston, fig.scap = "Playability Index in the Steveston neighbourhood.", fig.cap = "Playability Index in the Steveston neighbourhoods. The index is calculated for each postal code. A Playability Index of 1 indicates the lowest playability and a score of 5 indicates the highest playability."}
+include_graphics("figures/plot_van_stevenston_roads.png")
+```
+
+## Discussion
+
+### Summary
+
+This paper describes the development of a prediction model for children's UOA behavior. Predictors were selected based on the features of the built and social neighbourhood environment that children reported as important to them. By utilizing these techniques, we were able to identify and measure key neighbourhood predictors of children's time spent in UOA behavior and develop a model that predicts UOA among children. The score developed using this model is meant to indicate the degree to which a neighbourhood encourages unsupervised outdoor activity. This score or index could potentially be used by parents, city planners, and policymakers to better understand the influence of childrens' neighbourhood environment on their outdoor play behaviour. 
+
+### Interpretation
+
+As expected, incorporating prior information in the predictive models led to a reduction in the prediction accuracy within the training data. However, the qualitative prior information helped the models make better predictions outside of the specific training data, highlighting the value of incorporating expert knowledge and context-specific information. Despite these improvements, the accuracy outside of the sample remains significantly lower than within the sample, suggesting possible overfitting to the training data. Refinement of the models on further data could help improve predictive accuracy and generalizability.
+
+### Comparison with Previous Work
+
+Due to the small sample size available in this study, the estimated influence of the parameters measured can only be compared directionally. Contrary to our expectations, we did not observe an increase in outdoor play when there were more children to play with, but the measure that was used in this model only measures the presence of children of the appropriate age, not the suitability of those children as playmates. We did not find that access to parks had any positive effect. However, having access to things to do, including convenience stores, event spaces, and fast food restaurants, did have a mildly positive effect on time spent in UOA [@Brussoni2020-hz]. The presence of unsafe industry (e.g. manufacturing) also reduced outdoor play time, as would be expected based on the concerns about safety that were reported by the children in interviews. Our models agree with previous findings that reduced speed and quantity of traffic increases play time [@Lee2016-zp; @Aarts2012-dt], but previous observations that neighbourhood greenery was associated with increased UOA was not replicated in our sample [@Gubbels2016-jb].
+
+### Implications
+
+The playability predictions generated by this study could potentially be used to inform the intentional development and planning of healthy urban environments, with focused attention on the play needs of children. The predictors that showed agreement between quantitative and qualitative assessments in this study suggest possible avenues for further study. By focusing on these predictors, researchers can further investigate their influence on play behavior and potentially identify strategies for promoting UOA in childrens' neighbourhoods. In addition, future studies that aim to develop causal models of play behaviour could incorporate the index of playability generated by this study, thus providing a more comprehensive understanding of the factors that promote UOA. By working to make cities more accessible for play, we can make them more livable for everyone.
+
+### Limitations
+
+This study, while aiming to provide a comprehensive analysis of the predictors of UOA within the Vancouver area, has several important limitations. First, although the sample was selected from three distinct neighborhoods to ensure as much predictor variability as possible, the generalizability of the findings outside of Vancouver may be limited. This limitation is significant as the factors influencing outdoor play may differ between geographical regions, cultures, and communities, weather patterns, and populations. Even within major Canadian cities, the preferred spaces for play could be different based on their climate differences from Vancouver, and cultural influences on the preferred types and locations for play.
+
+Second, the small sample size in this study allowed for careful data collection, but the low number of observations per predictor resulted in estimates with high uncertainty. This may limit the precision of the findings and hinder the identification of important predictors. Future work should test and refine these models in larger populations.
+
+Lastly, the weak out-of-sample prediction accuracy, along with the high day-to-day variation in behaviours, suggests that the study did not capture all of the relevant predictors of UOA. Given that this study focused mainly on aspects of the built and social environment, this limitation is not entirely unexpected as outdoor play behaviour is influenced by a myriad of factors, including the perception of the safety of these behaviours by parents and the children themselves [@Brussoni2020-hz]. While this model did attempt to include measures of relevant factors, the measures used are known to be imperfect.
+
+### Conclusion
+
+This study provides quantitative estimates of the relationship between factors of the built and social environment identified as important by children and the suitability of neighbourhoods for outdoor play, and uses those estimates to establish a playability score for the greater Vancouver area. Policymakers and parents can use this score to understand the relationship between neighbourhood environment and childrens' outdoor active play behaviour. By choosing to develop neighbourhoods that encourage healthy behaviour, we could potentially improve the well-being of the children who live there. 
+
+
+
+
+
+
+
+

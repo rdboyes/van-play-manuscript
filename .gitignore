@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+data/rte.rda
+data/lpr_000b21a_e.shp
+*.Rdata
+m1/
+data/
+figure/
+figures/
